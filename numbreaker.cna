@@ -1,0 +1,381 @@
+# numbreaker
+# Author: Savsanta (Ru)
+# Helper CNA Script to Assist Red Team Operators with Numerical Conversion Operator
+
+
+ beacon_command_register("numbreaker", "Numerical Conversion RT Operators Helper CNA Script For Red Team Engagements",
+                "\nnumbreaker \n" .
+                "\n Supports conversion of the following types:\n" .
+                "\n\c7 uac\o | User Account Control values that are associated to an accounts in Active Directory.\n" .
+                "\n\c7 ntdate\o | Useful to convert 18-digit Microsoft timestamps commonly found in Active Directory attributes (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime and Systemtime values.\n" .
+                "\n\n");
+
+        alias numbreaker {
+
+                nbframe($1);
+         
+        } # end of add_alias
+
+
+# Globals (basically)
+
+        sub nbframe {
+        
+                import javax.swing.*;
+                import javax.swing.text.*;
+                import java.awt.BorderLayout;
+                import java.awt.Color;
+                import java.awt.Font;
+                import java.awt.Cursor;
+                import java.nio.charset.StandardCharsets;
+                import java.awt.datatransfer.DataFlavor.*;
+                import java.awt.datatransfer.StringSelection;
+
+                $RELATED = [javax.swing.LayoutStyle$ComponentPlacement RELATED];
+                $UNRELATED = [javax.swing.LayoutStyle$ComponentPlacement UNRELATED];
+                $INDENT = [javax.swing.LayoutStyle$ComponentPlacement INDENT];
+                $BASELINE = [javax.swing.GroupLayout$Alignment BASELINE];
+                $CENTER = [javax.swing.GroupLayout$Alignment CENTER];
+                $LEADING = [javax.swing.GroupLayout$Alignment LEADING];
+                $TRAILING = [javax.swing.GroupLayout$Alignment TRAILING];
+                
+                # Non-Working Implementation But Good For Learning
+		        # Usage of abstract class
+                #$TK = [java.awt.Toolkit getDefaultToolkit];
+                #$CLP = [$TK getSystemSelection];
+                #$df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
+                #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
+                #$test = [$CLP getData: $df];
+		        #$bolo = [$test toString];
+                
+                blog($1, "Data About CLP is $bolo");
+                println($bolo);
+                
+                # AFAIK Correct But Non-working PRIMARY implementation
+                #$rt = [Runtime getRuntime];
+                #$proc = [$rt exec: "xsel"];
+		        # In case above is deprecated in your version replace with Process process = Runtime.getRuntime().exec("xclip -o -selection primary");
+		        #$selectionText = [[$proc getInputStream] readAllBytes];
+		        #$selectionText = [new String: $selectionText, [java.nio.charset.StandardCharsets UTF_8]];
+		        #if ($DEVDEBUG) {
+		        #    blog($1, "Selection Test $selectionText");
+		        #    println("Blahshe Blashe --> $selectionText");
+                #}
+                
+                $TK = [java.awt.Toolkit getDefaultToolkit];
+                $CLP = [$TK getSystemClipboard];
+                $df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
+                #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
+                $clpObj = [$CLP getData: $df];
+		        $clipText = [$clpObj toString];
+		
+		        # Working CLIP and Streamwriter Implementation 
+		        $sw = [new java.io.StringWriter]; 
+		        [$clpObj transferTo: $sw];
+		        [[$sw getBuffer] setLength: 30];
+		        [$sw flush];
+            	$resstr = [[$sw toString] trim];
+                
+                if ($DEVDEBUG) {
+	                blog($1, "CLP Test $clipText");
+	                blog($1, "StringCasts Test $resstr ");
+	                println("CLP Blahshe Blashe --> $clipText");
+	                println("resstr Blahshe Blashe --> $resstr");
+	                println("df type is  --> $sw");
+                }
+ 
+                $nbframe = [new JFrame];
+                [$nbframe setSize: 540, 470];
+                [$nbframe setTitle: "NB TITLE"];
+                [$nbframe setVisible: 1];
+                
+                
+                local('$buttonGroup1 $4');
+                $buttonGroup1 = [new ButtonGroup];
+                $jPanel2 = [new JPanel];
+                $jLabel6 = [new JLabel];
+                $jLabel7 = [new JLabel];
+                $jTextField5 = [new JTextField];
+                $jRadioButton1 = [new JRadioButton];
+                $jRadioButton2 = [new JRadioButton];
+                $jRadioButton3 = [new JRadioButton];
+                $jScrollPane2 = [new JScrollPane];
+                $jTextArea1 = [new JTextArea];
+                
+                [$jPanel2 setBorder: [BorderFactory createTitledBorder: "numbreaker"]];
+                [$jPanel2 setForeground: [new Color: 255, 51, 0]];
+                
+                [$jTextField5 setText: $resstr];
+                
+                [$jLabel6 setText: "Input Value"];
+                [$jLabel7 setText: "Input Value Type"];
+                
+                [$jRadioButton1 setSelected: 0];
+                [$jRadioButton1 setText: "berldval"];
+                [$jRadioButton1 setActionCommand: "berldval"];
+                [$jRadioButton1 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
+                
+                [$jRadioButton2 setSelected: 0];
+                [$jRadioButton2 setText: "uac"];
+                [$jRadioButton2 setActionCommand: "uac"];
+                [$jRadioButton2 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
+                [$jRadioButton2 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
+                
+                [$jRadioButton3 setSelected: 0];
+                [$jRadioButton3 setText: "ntdate"];
+                [$jRadioButton3 setActionCommand: "ntdate"];
+                [$jRadioButton3 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
+                [$jRadioButton3 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
+                
+                [$buttonGroup1 add: $jRadioButton1];
+                [$buttonGroup1 add: $jRadioButton2];
+                [$buttonGroup1 add: $jRadioButton3];
+                
+                [$jTextArea1 setColumns: 20];
+                [$jTextArea1 setRows: 5];
+                [$jTextArea1 setEditable: 0];
+                [$jTextArea1 setLineWrap: 1];
+                [$jTextArea1 setFont: [new Font: "Sans Regular", [Font BOLD], 14]];
+                [$jTextArea1 setDisabledTextColor: [new Color: 0, 86, 86]];
+                [$jTextArea1 setBackground: [new Color: 102,153,255]];
+                [$jScrollPane2 setViewportView: $jTextArea1];
+
+                $jPanel2Layout = [new GroupLayout: $jPanel2];
+                [$jPanel2 setLayout: $jPanel2Layout];
+
+                
+                [$jRadioButton1 addActionListener: lambda({
+                [$callable: $sm, $nmd, $ta] ; ; },
+                $sm => "berval" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+                
+                
+                [$jRadioButton2 addActionListener: lambda({
+                [$callable: $sm, $nmd, $ta] ; ; },
+                $sm => "uac" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+                
+
+                [$jRadioButton3 addActionListener: lambda({
+                [$callable: $sm, $nmd, $ta] ; ; },
+                $sm => "ntdate"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+               
+        
+        # ------------------------Beginneth the Complex Layouting Hence The Underindent-------------------------- #
+
+        $jPanel2Layout = [new GroupLayout: $jPanel2];
+        [$jPanel2 setLayout: $jPanel2Layout];
+
+        $group1 = [$jPanel2Layout createSequentialGroup];
+        [$group1 addGap: 157];
+        [$group1 addComponent: $jRadioButton1];
+        [$group1 addPreferredGap: $RELATED];
+        [$group1 addComponent: $jRadioButton2];
+        [$group1 addPreferredGap: $RELATED];
+        [$group1 addComponent: $jRadioButton3];
+
+        $group2 = [$jPanel2Layout createSequentialGroup];
+        [$group2 addGap: 203 ];
+        [$group2 addComponent: $jLabel7];
+
+        $innerParallelGroup = [$jPanel2Layout createParallelGroup: $LEADING];
+        [$innerParallelGroup addGroup: $group1];
+        [$innerParallelGroup addGroup: $group2];
+
+        $group3 = [$jPanel2Layout createSequentialGroup];
+        [$group3 addContainerGap];
+        [$group3 addComponent: $jLabel6];
+        [$group3 addPreferredGap: $RELATED];
+        [$group3 addComponent: $jTextField5];
+        [$group3 addGap: 20];
+
+        $group4 = [$jPanel2Layout createSequentialGroup];
+        [$group4 addComponent: $jScrollPane2];
+        [$group4 addContainerGap];
+
+        $horizontalGroup = [$jPanel2Layout createParallelGroup: $LEADING];
+        [$horizontalGroup addGroup: $innerParallelGroup];
+        [$horizontalGroup addGroup: $group3];
+        [$horizontalGroup addGroup: $group4];
+
+        [$jPanel2Layout setHorizontalGroup: $horizontalGroup];
+
+        $verticalGroup = [$jPanel2Layout createSequentialGroup];
+        $parallelGroup1 = [$jPanel2Layout createParallelGroup: $BASELINE ];
+        [$parallelGroup1 addComponent: $jLabel6];
+        [$parallelGroup1 addComponent: $jTextField5, -2, -1, -2];
+
+        [$verticalGroup addGroup: $parallelGroup1];
+        [$verticalGroup addPreferredGap: $RELATED];
+        [$verticalGroup addComponent: $jLabel7];
+        [$verticalGroup addPreferredGap: $RELATED];
+        
+        $parallelGroup2 = [$jPanel2Layout createParallelGroup: $LEADING];
+        [$parallelGroup2 addComponent: $jRadioButton1];
+        [$parallelGroup2 addComponent: $jRadioButton2];
+        [$parallelGroup2 addComponent: $jRadioButton3];
+        
+        [$verticalGroup addGroup: $parallelGroup2];
+        [$verticalGroup addPreferredGap: $RELATED];
+        [$verticalGroup addComponent: $jScrollPane2, -2, 316, -2];
+        [$verticalGroup addPreferredGap: $RELATED];
+
+        [$jPanel2Layout setVerticalGroup: $verticalGroup];
+
+        $layout = [new GroupLayout: [$nbframe getContentPane]];
+        [[$nbframe getContentPane] setLayout: $layout];
+
+        $horizontalGroupLayout = [$layout createParallelGroup: $LEADING];
+        [$horizontalGroupLayout addComponent: $jPanel2, $TRAILING, -1, -1, 25555];
+        [$layout setHorizontalGroup: $horizontalGroupLayout];
+
+        $verticalGroupLayout = [$layout createSequentialGroup];
+        [$verticalGroupLayout addComponent: $jPanel2, -1, -1, 25555];
+        [$verticalGroupLayout addGap: 0, 0, 0];
+        [$layout setVerticalGroup: $verticalGroupLayout];
+
+    }
+    
+    sub btn_dispatch {
+    
+        $selOpt = $1;
+        $input = [$2 getText];
+        $ta = $3;
+        
+        if (!-istrue $selOpt ) {
+            println("Error: No selected model in btn_dispatch");
+        }
+        
+        if ($selOpt eq "berval" ) {
+          
+            $output = "unimplemented";   
+        }
+        
+        if ($selOpt eq "uac" ) {
+            
+            $output = calc_uac($input);
+        }
+        
+        if ($selOpt eq "ntdate" ) {
+        
+            $output = calc_ntdate($input);
+        }
+        
+        [$ta setText: $output];
+        return;
+        
+    }
+
+
+    sub calc_ntdate {
+        # Should be useable with any AD based time afaik
+        local('$ldaptime $res $ans $formans')
+        
+        $ldaptime = $1;
+        $res = "\n";
+        
+        # Sanity Checks Here
+        # Make this matcher more robust. It silent fails on some cases (e.g. "#Bad21433422424" or "$131341412424343343")
+        if ($ldaptime ismatch '[^0-9]+') {
+
+            $res .= "\tERROR: Bad Chars Found!\n";
+            return $res;
+        }
+        
+        # Sanity Checks Here
+        if (strlen($ldaptime) != 18) {
+
+            $res .= "WARN: WIN32/MSAD/LDAPTIME/MSFILETIME should be 18 digits.\n\n";
+        }
+        
+        # Attempt to cast to a number
+        $ldaptime = parseNumber($ldaptime);
+        
+        # EPOCH establishment for Windows
+        $WIN_EPOCH = 11644473600000L;
+
+        # Convert to milliseconds and subtract epoch
+        $ans = ($ldaptime / 10000L) - $WIN_EPOCH; 
+        
+        $formans = formatDate($ans, "MMM dd YYYY  HH:mm:ss Z");
+        $res .= "\t$formans\n";
+
+        return $res;
+
+    }
+
+
+    sub calc_uac {
+    
+        local('$count $samval $res');
+        $samval = $1; 
+        $res = "\n\t\tActive Attribute\n";#   \t\t\tDescription\n";
+        $count = 0;
+    
+        @textval = @("SCRIPT" , "ACCOUNTDISABLE" , "HOMEDIR_REQUIRED" , "LOCKOUT" , "PASSWD_NOTREQD" , 
+            "PASSWD_CANT_CHANGE" , "ENCRYPTED_TEXT_PWD_ALLOWED" , "TEMP_DUPLICATE_ACCOUNT" , "NORMAL_ACCOUNT" , "INTERDOMAIN_TRUST_ACCOUNT" , 
+            "WORKSTATION_TRUST_ACCOUNT" , "SERVER_TRUST_ACCOUNT" , "DONT_EXPIRE_PASSWORD" , "MNS_LOGON_ACCOUNT" , "SMARTCARD_REQUIRED" , 
+            "TRUSTED_FOR_DELEGATION" , "NOT_DELEGATED" , "USE_DES_KEY_ONLY" , "DONT_REQ_PREAUTH" , "PASSWORD_EXPIRED" , 
+            "TRUSTED_TO_AUTH_FOR_DELEGATION" , "PARTIAL_SECRETS_ACCOUNT");
+        @hexval = @(0x0001 , 0x0002 , 0x0008 , 0x0010 , 0x0020 , 
+            0x0040 , 0x0080 , 0x0100 , 0x0200 , 0x0800 , 
+            0x1000 , 0x2000 , 0x10000 , 0x20000 , 0x40000 , 
+            0x80000 , 0x100000 , 0x200000 , 0x400000 , 0x800000 , 
+            0x1000000 , 0x04000000);
+        
+        # Trim Spaces
+        #$samval = tr($samval, "\D", "", "ds");
+        
+        # Attempt to cast to a number
+        $samval = parseNumber($samval);
+        
+        while (22 > $count) {
+        
+            if (-istrue ($samval & @hexval[$count])) {
+
+            ##if (@hexval[$count] & @samval)   # Lesson Learned.: @savmal is supposed to be $samval because it is a whole integer. When bitwise ANDing with the array of objects (@heval[count] it caused some sort of infiinite loop crash
+                
+                ## Lesson Learned.: Proper way to pass the output of array as a string to an output function. No quotations marks needed. Have to break it up if need to add text.
+                $res .= @textval[$count];
+                $res .= "\t\t";
+                #$res .= @hexval[$count];
+                $res .= "✓";
+                $res .= "\n";
+            }
+            
+            $count += 1;
+        }
+
+        return $res;
+        
+    }
+    
+    sub calc_reserved1 {
+
+        
+        
+    }
+    
+    sub test_calc_ntdate {
+
+            if ($DEVDEBUG)
+            {
+                    $testday = 133912948113562207L;
+                    $ans = calc_ntdate($testday);
+                    $formans = formatDate($ans, "MMM dd YYYY  HH:mm:ss Z");
+                    blog2($1, "Tizis $ans || Answers is $formans");
+                    calc_samacct(0x0202);
+                    return;
+            }
+
+    }
+    
+    
+    sub test_calc_uac {
+
+            if ($DEVDEBUG)
+            {
+                    calc_uac(0x0202);
+                    return;
+            }
+
+    }
+    
