@@ -1,6 +1,6 @@
 # numbreaker
 # Author: Savsanta (Ru)
-# Helper CNA Script to Assist Red Team Operators with Numerical Conversion Operator
+# Numerical Conversion Operator Helper CNA Script For Red Team Engagements
 
 
  beacon_command_register("numbreaker", "Numerical Conversion RT Operators Helper CNA Script For Red Team Engagements",
@@ -86,7 +86,7 @@
  
                 $nbframe = [new JFrame];
                 [$nbframe setSize: 540, 470];
-                [$nbframe setTitle: "NB TITLE"];
+                [$nbframe setTitle: "NB"];
                 [$nbframe setVisible: 1];
                 
                 
@@ -135,7 +135,7 @@
                 [$jTextArea1 setRows: 5];
                 [$jTextArea1 setEditable: 0];
                 [$jTextArea1 setLineWrap: 1];
-                [$jTextArea1 setFont: [new Font: "Sans Regular", [Font BOLD], 14]];
+                [$jTextArea1 setFont: [new Font: "Fira Code", [Font SEMIBOLD], 14]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 0, 86, 86]];
                 [$jTextArea1 setBackground: [new Color: 102,153,255]];
                 [$jScrollPane2 setViewportView: $jTextArea1];
@@ -143,17 +143,15 @@
                 $jPanel2Layout = [new GroupLayout: $jPanel2];
                 [$jPanel2 setLayout: $jPanel2Layout];
 
-                
+                # Calculation Handler Routines
                 [$jRadioButton1 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "berval" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
-                
-                
+                  
                 [$jRadioButton2 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "uac" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
                 
-
                 [$jRadioButton3 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "ntdate"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
@@ -307,7 +305,7 @@
     
         local('$count $samval $res');
         $samval = $1; 
-        $res = "\n\t\tActive Attribute\n";#   \t\t\tDescription\n";
+        $res = "\n\t Active Attribute\n";#   \t\t\tDescription\n";
         $count = 0;
     
         @textval = @("SCRIPT" , "ACCOUNTDISABLE" , "HOMEDIR_REQUIRED" , "LOCKOUT" , "PASSWD_NOTREQD" , 
@@ -331,13 +329,9 @@
         
             if (-istrue ($samval & @hexval[$count])) {
 
-            ##if (@hexval[$count] & @samval)   # Lesson Learned.: @savmal is supposed to be $samval because it is a whole integer. When bitwise ANDing with the array of objects (@heval[count] it caused some sort of infiinite loop crash
-                
-                ## Lesson Learned.: Proper way to pass the output of array as a string to an output function. No quotations marks needed. Have to break it up if need to add text.
-                $res .= @textval[$count];
+                $res .= " ✓";
                 $res .= "\t\t";
-                #$res .= @hexval[$count];
-                $res .= "✓";
+                $res .= @textval[$count];
                 $res .= "\n";
             }
             
@@ -379,3 +373,4 @@
 
     }
     
+
