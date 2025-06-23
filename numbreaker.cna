@@ -113,17 +113,20 @@
                 [$jRadioButton1 setSelected: 0];
                 [$jRadioButton1 setText: "berldval"];
                 [$jRadioButton1 setActionCommand: "berldval"];
+                [$jRadioButton1 setToolTipText: "NOT IMPLEMENTED"];
                 [$jRadioButton1 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 
                 [$jRadioButton2 setSelected: 0];
                 [$jRadioButton2 setText: "uac"];
                 [$jRadioButton2 setActionCommand: "uac"];
+                [$jRadioButton2 setToolTipText: "Calculate the User Account Control values."];
                 [$jRadioButton2 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 [$jRadioButton2 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
                 
                 [$jRadioButton3 setSelected: 0];
                 [$jRadioButton3 setText: "ntdate"];
                 [$jRadioButton3 setActionCommand: "ntdate"];
+                [$jRadioButton3 setToolTipText: "Convert common Windows LDAP or File times to human readable values."];
                 [$jRadioButton3 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 [$jRadioButton3 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
                 
