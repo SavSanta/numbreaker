@@ -40,16 +40,15 @@
                 $TRAILING = [javax.swing.GroupLayout$Alignment TRAILING];
                 
                 # Non-Working Implementation But Good For Learning
-		        # Usage of abstract class
+		# Usage of abstract class
                 #$TK = [java.awt.Toolkit getDefaultToolkit];
                 #$CLP = [$TK getSystemSelection];
                 #$df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
                 #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
                 #$test = [$CLP getData: $df];
-		        #$bolo = [$test toString];
-                
-                blog($1, "Data About CLP is $bolo");
-                println($bolo);
+		#$bolo = [$test toString];
+                #blog($1, "Data About CLP is $bolo");
+                #println($bolo);
                 
                 # AFAIK Correct But Non-working PRIMARY implementation
                 #$rt = [Runtime getRuntime];
@@ -67,13 +66,13 @@
                 $df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
                 #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
                 $clpObj = [$CLP getData: $df];
-		        $clipText = [$clpObj toString];
+		$clipText = [$clpObj toString];
 		
-		        # Working CLIP and Streamwriter Implementation 
-		        $sw = [new java.io.StringWriter]; 
-		        [$clpObj transferTo: $sw];
-		        [[$sw getBuffer] setLength: 30];
-		        [$sw flush];
+		# Working CLIP and Streamwriter Implementation 
+		$sw = [new java.io.StringWriter]; 
+		[$clpObj transferTo: $sw];
+		[[$sw getBuffer] setLength: 30];
+		[$sw flush];
             	$resstr = [[$sw toString] trim];
                 
                 if ($DEVDEBUG) {
