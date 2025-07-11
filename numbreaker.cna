@@ -139,6 +139,7 @@
                 [$jTextArea1 setLineWrap: 1];
                 [$jTextArea1 setFont: [new Font: "Fira Code", [Font PLAIN], 14]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 0, 86, 86]];
+                [$jTextArea1 setDisabledTextColor: [new Color: 8, 8, 8]];
                 [$jTextArea1 setBackground: [new Color: 102,153,255]];
                 [$jScrollPane2 setViewportView: $jTextArea1];
 
