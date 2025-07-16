@@ -23,7 +23,7 @@ The radial option for berval is currently NOT IMPLEMENTED. It's a placeholder un
 
 ![NTDATE EX](screenshots/sshot-ntdate.png)
 
-MSAD/LDAP 
+MSAD/LDAP/NT Datetime
 
 ![UAC EX](screenshots/sshot-uac.png)
 
