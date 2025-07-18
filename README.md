@@ -2,9 +2,10 @@
 
 ### Overview
 A Cobalt Strike Aggressor Script to assist an operators in conversions of common numerical types into human understandable types.
-Supports converting from:
-    - User Account Control values that are associated to an accounts in Active Directory.
-    - Common Microsoft timestamps. ie Active Directory (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime/Systemtime values.
+Supports converting from:  
+
+   - User Account Control values that are associated to an accounts in Active Directory.  
+   - Common Microsoft timestamps. ie Active Directory (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime/Systemtime values.  
     
 ### Usage
 
