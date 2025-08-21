@@ -12,9 +12,8 @@
 
         alias numbreaker {
 
-                nbframe($1);
-         
-        } # end of add_alias
+                nbframe($1); 
+        }
 
 
 # Globals (basically)
