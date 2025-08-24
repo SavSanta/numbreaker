@@ -1,7 +1,7 @@
 # numbreaker
 
 ### Overview
-A Cobalt Strike Aggressor Script to assist an operators in conversions of common numerical types into human understandable types.
+A Cobalt Strike Aggressor Script to assist an operators in conversions of common numerical, alphanumerical, or similar data types into human readable data.
 Supports converting from:  
 
    - User Account Control values that are associated to an accounts in Active Directory.  
@@ -11,14 +11,14 @@ Supports converting from:
 
 1) Install the Aggressor Script into your Cobalt Strike Client.
 2) In a beacon window type `numbreaker`
-3) Enter in a numerical value in the new pop-up window
+3) Enter in a value in the new pop-up window
 4) Select the type of conversion that is desired by clicking on the appropriate radial dial buttons.
 
-Alterntively, once can install as a right-click pop-up in your Cobalt Strike default.cna. Reference the [manual](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics_aggressor-scripts/as_cobalt-strike.htm) for more info.
+Alternatively, once can install as a right-click pop-up in your Cobalt Strike default.cna. Reference the [manual](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics_aggressor-scripts/as_cobalt-strike.htm) for more info.
 
 ### Caveats
 
-The radial option for berval is currently NOT IMPLEMENTED. It's a placeholder until one day I drum up one more numerical option that can be converted clientside for operators.
+The radial option for berval is currently NOT IMPLEMENTED. It's a placeholder until one day I drum up one more alphanumerical option that can be converted clientside for operators.
 
 ## Screenshots
 
@@ -29,3 +29,6 @@ MSAD/LDAP/NT Datetime
 ![UAC EX](screenshots/sshot-uac.png)
 
 User Account Control
+
+## TODO
+- CIDR Maths
