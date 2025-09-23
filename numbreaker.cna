@@ -39,13 +39,13 @@
                 $TRAILING = [javax.swing.GroupLayout$Alignment TRAILING];
                 
                 # Non-Working Implementation But Good For Learning
-		# Usage of abstract class
+		        # Usage of abstract class
                 #$TK = [java.awt.Toolkit getDefaultToolkit];
                 #$CLP = [$TK getSystemSelection];
                 #$df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
                 #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
                 #$test = [$CLP getData: $df];
-		#$bolo = [$test toString];
+		        #$bolo = [$test toString];
                 #blog($1, "Data About CLP is $bolo");
                 #println($bolo);
                 
@@ -63,15 +63,15 @@
                 $TK = [java.awt.Toolkit getDefaultToolkit];
                 $CLP = [$TK getSystemClipboard];
                 $df = [java.awt.datatransfer.DataFlavor plainTextFlavor];
-                #$df = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
+                #$dfu = [java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor];
                 $clpObj = [$CLP getData: $df];
-		$clipText = [$clpObj toString];
+		        $clipText = [$clpObj toString];
 		
-		# Working CLIP and Streamwriter Implementation 
-		$sw = [new java.io.StringWriter]; 
-		[$clpObj transferTo: $sw];
-		[[$sw getBuffer] setLength: 30];
-		[$sw flush];
+		        # Working CLIP and Streamwriter Implementation 
+		        $sw = [new java.io.StringWriter]; 
+		        [$clpObj transferTo: $sw];
+		        [[$sw getBuffer] setLength: 30];
+		        [$sw flush];
             	$resstr = [[$sw toString] trim];
                 
                 if ($DEVDEBUG) {
@@ -109,9 +109,9 @@
                 [$jLabel7 setText: "Input Value Type"];
                 
                 [$jRadioButton1 setSelected: 0];
-                [$jRadioButton1 setText: "berldval"];
-                [$jRadioButton1 setActionCommand: "berldval"];
-                [$jRadioButton1 setToolTipText: "NOT IMPLEMENTED"];
+                [$jRadioButton1 setText: "samacct"];
+                [$jRadioButton1 setActionCommand: "samacct"];
+                [$jRadioButton1 setToolTipText: "Translate SAMAccount info"];
                 [$jRadioButton1 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 
                 [$jRadioButton2 setSelected: 0];
@@ -148,7 +148,7 @@
                 # Calculation Handler Routines
                 [$jRadioButton1 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
-                $sm => "berval" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+                $sm => "samacct" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
                   
                 [$jRadioButton2 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
@@ -244,9 +244,9 @@
             println("Error: No selected model in btn_dispatch");
         }
         
-        if ($selOpt eq "berval" ) {
+        if ($selOpt eq "samacct" ) {
           
-            $output = "unimplemented";   
+            $output = calc_samacct($input);   
         }
         
         if ($selOpt eq "uac" ) {
@@ -257,6 +257,11 @@
         if ($selOpt eq "ntdate" ) {
         
             $output = calc_ntdate($input);
+        }
+        
+        if ($selOpt eq "samcct" ) {
+        
+            $output = calc_samacct($input);
         }
         
         [$ta setText: $output];
@@ -271,7 +276,10 @@
         
         $ldaptime = $1;
         $res = "\n";
-        
+
+        # EPOCH establishment for Windows
+        $WIN_EPOCH = 11644473600000L;
+ 
         # Sanity Checks Here
         # Make this matcher more robust. It silent fails on some cases (e.g. "#Bad21433422424" or "$131341412424343343")
         if ($ldaptime ismatch '[^0-9]+') {
@@ -289,8 +297,6 @@
         # Attempt to cast to a number
         $ldaptime = parseNumber($ldaptime);
         
-        # EPOCH establishment for Windows
-        $WIN_EPOCH = 11644473600000L;
 
         # Convert to milliseconds and subtract epoch
         $ans = ($ldaptime / 10000L) - $WIN_EPOCH; 
@@ -305,8 +311,8 @@
 
     sub calc_uac {
     
-        local('$count $samval $res');
-        $samval = $1; 
+        local('$count $uacval $res');
+        $uacval = $1; 
         $res = "\n\t Active Attribute\n";#   \t\t\tDescription\n";
         $count = 0;
     
@@ -322,14 +328,14 @@
             0x1000000 , 0x04000000);
         
         # Trim Spaces
-        #$samval = tr($samval, "\D", "", "ds");
+        #$uacval = tr($uacval, "\D", "", "ds");
         
         # Attempt to cast to a number
-        $samval = parseNumber($samval);
+        $uacval = parseNumber($uacval);
         
         while (22 > $count) {
         
-            if (-istrue ($samval & @hexval[$count])) {
+            if (-istrue ($uacval & @hexval[$count])) {
 
                 $res .= " ✓";
                 $res .= "\t\t";
@@ -344,35 +350,89 @@
         
     }
     
-    sub calc_reserved1 {
+    sub calc_samacct {
+    
+        local('$count $samval $val $res');
+        $samval = trim($1); 
+        $val = $null;
+        $res = "\n\t SAM Account Type\n";
+        $count = 0;
+    
+        @textval = @("SAM_DOMAIN_OBJECT" , "SAM_GROUP_OBJECT" , "SAM_NON_SECURITY_GROUP_OBJECT" , "SAM_ALIAS_OBJECT" , "SAM_NON_SECURITY_ALIAS_OBJECT" , 
+            "SAM_USER_OBJECT" , "SAM_MACHINE_ACCOUNT" , "SAM_TRUST_ACCOUNT" , "SAM_APP_BASIC_GROUP" , 
+            "SAM_APP_QUERY_GROUP" , "SAM_ACCOUNT_TYPE_MAX" );
+        $decval =   %(  0 => "SAM_DOMAIN_OBJECT",
+            268435456 => "SAM_GROUP_OBJECT",
+            268435457 => "SAM_NON_SECURITY_GROUP_OBJECT",
+            536870912 => "SAM_ALIAS_OBJECT",
+            536870913 => "SAM_NON_SECURITY_ALIAS_OBJECT",
+            805306368 => "SAM_USER_OBJECT",
+            805306369 => "SAM_MACHINE_ACCOUNT",
+            805306370 => "SAM_TRUST_ACCOUNT",
+            1073741824 => "SAM_APP_BASIC_GROUP",
+            1073741825 => "SAM_APP_QUERY_GROUP",
+            2147483647 => "SAM_ACCOUNT_TYPE_MAX"
+         );
+        
+        if (left($samval, 2) ismatch '0[xXˣₓ×]') {
+            $val = parseNumber(replaceAt($samval, 0, 0, 2), 16);
+        }
+        else {
+            $val = parseNumber($samval);
+        }
 
+        if ($val in $decval) {
+            
+                $res .= "\n\t\t" . $decval[$val];
+
+            }
+        else {
+            $res .= "\n\t\tFATAL CONVERSION FAILURE!" ;
+        }
         
-        
+        return $res;
+    }
+
+    sub test_calc_samacct {
+    
+        if ($DEVDEBUG)
+        {
+                # 268435456
+                # 268435457
+                # 536870912
+                calc_samacct("536870912");
+                return;
+        }
+
     }
     
     sub test_calc_ntdate {
 
-            if ($DEVDEBUG)
-            {
-                    $testday = 133912948113562207L;
-                    $ans = calc_ntdate($testday);
-                    $formans = formatDate($ans, "MMM dd YYYY  HH:mm:ss Z");
-                    blog2($1, "Tizis $ans || Answers is $formans");
-                    calc_samacct(0x0202);
-                    return;
-            }
+        if ($DEVDEBUG)
+        {
+                $testday = 133912948113562207L;
+                $ans = calc_ntdate($testday);
+                $formans = formatDate($ans, "MMM dd YYYY  HH:mm:ss Z");
+                blog2($1, "Tizis $ans || Answers is $formans");
+                calc_samacct(0x0202);
+                return;
+        }
 
     }
     
-    
     sub test_calc_uac {
 
-            if ($DEVDEBUG)
-            {
-                    calc_uac(0x0202);
-                    return;
-            }
+        if ($DEVDEBUG)
+        {
+                calc_uac(0x0202);
+                return;
+        }
 
+    }
+    
+    sub trim {
+    
+        return tr($1, "\s", "s");
     }
     
 
