@@ -16,10 +16,6 @@ Supports converting from:
 
 Alternatively, once can install as a right-click pop-up in your Cobalt Strike default.cna. Reference the [manual](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics_aggressor-scripts/as_cobalt-strike.htm) for more info.
 
-### Caveats
-
-The radial option for berval is currently NOT IMPLEMENTED. It's a placeholder until one day I drum up one more alphanumerical option that can be converted clientside for operators.
-
 ## Screenshots
 
 ![NTDATE EX](screenshots/sshot-ntdate.png)
