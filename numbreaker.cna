@@ -2,10 +2,10 @@
 # Author: Savsanta (Ru)
 # Numerical Conversion Operator Helper CNA Script For Red Team Engagements
 
-
  beacon_command_register("numbreaker", "Numerical Conversion RT Operators Helper CNA Script For Red Team Engagements",
                 "\nnumbreaker \n" .
                 "\n Supports conversion of the following types:\n" .
+				"\n\c7 samacct\o | SAMAccount Type value\n" .
                 "\n\c7 uac\o | User Account Control values that are associated to an accounts in Active Directory.\n" .
                 "\n\c7 ntdate\o | Useful to convert 18-digit Microsoft timestamps commonly found in Active Directory attributes (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime and Systemtime values.\n" .
                 "\n\n");
