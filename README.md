@@ -4,6 +4,7 @@
 A Cobalt Strike Aggressor Script to assist an operators in conversions of common numerical, alphanumerical, or similar data types into human readable data.
 Supports converting from:  
 
+   - SAMAccount type values that are typically found listed for accounts in Active Directory.  
    - User Account Control values that are associated to an accounts in Active Directory.  
    - Common Microsoft timestamps. ie Active Directory (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime/Systemtime values.  
     
