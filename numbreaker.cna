@@ -518,23 +518,23 @@
     }
     
     sub long_to_ip {
-    local('$num $octet1 $octet2 $octet3 $octet4');
-    $num = $1;
-    
-    $octet1 = ($num >> 24) & 0xFF;
-    $octet2 = ($num >> 16) & 0xFF;
-    $octet3 = ($num >> 8) & 0xFF;
-    $octet4 = $num & 0xFF;
-    
-    return "$octet1\.$octet2\.$octet3\.$octet4";
-}
+        local('$num $octet1 $octet2 $octet3 $octet4');
+        $num = $1;
+        
+        $octet1 = ($num >> 24) & 0xFF;
+        $octet2 = ($num >> 16) & 0xFF;
+        $octet3 = ($num >> 8) & 0xFF;
+        $octet4 = $num & 0xFF;
+        
+        return "$octet1\.$octet2\.$octet3\.$octet4";
+    }
 
-sub switcher {
+    sub switcher {
     
-    #$dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
-    #$lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
-    
-    return;
-}
+        #$dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
+        #$lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
+        
+        return;
+    }
     
 
