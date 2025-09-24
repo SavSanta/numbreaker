@@ -145,10 +145,10 @@
                 [$jTextArea1 setRows: 5];
                 [$jTextArea1 setEditable: 0];
                 [$jTextArea1 setLineWrap: 1];
-                [$jTextArea1 setFont: [new Font: "Fira Code", [Font PLAIN], 14]];
+                [$jTextArea1 setFont: [new Font: "Fira Code", [Font BOLD], 14]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 0, 86, 86]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 8, 8, 8]];
-                [$jTextArea1 setBackground: [new Color: 102,153,255]];
+                [$jTextArea1 setBackground: [new Color: 73, 18, 150]];
                 [$jScrollPane2 setViewportView: $jTextArea1];
 
                 $jPanel2Layout = [new GroupLayout: $jPanel2];
@@ -528,5 +528,13 @@
     
     return "$octet1\.$octet2\.$octet3\.$octet4";
 }
+
+    sub switcher {
+    
+        $dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
+        $lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
+        
+        return;
+    }
     
 
