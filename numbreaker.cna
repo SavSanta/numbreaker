@@ -529,12 +529,12 @@
     return "$octet1\.$octet2\.$octet3\.$octet4";
 }
 
-    sub switcher {
+sub switcher {
     
-        $dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
-        $lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
-        
-        return;
-    }
+    #$dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
+    #$lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
+    
+    return;
+}
     
 
