@@ -148,7 +148,7 @@
                 [$jTextArea1 setFont: [new Font: "Fira Code", [Font BOLD], 14]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 0, 86, 86]];
                 [$jTextArea1 setDisabledTextColor: [new Color: 8, 8, 8]];
-                [$jTextArea1 setBackground: [new Color: 73, 18, 150]];
+                [$jTextArea1 setBackground: [new Color: 87, 28, 140]];
                 [$jScrollPane2 setViewportView: $jTextArea1];
 
                 $jPanel2Layout = [new GroupLayout: $jPanel2];
