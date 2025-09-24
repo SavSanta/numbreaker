@@ -472,8 +472,8 @@
         $totals = 1 << (32 - $prefix);
         
         $res .= "\nStart Addr: $networkAddr";
-        $res .= "\nEnd Addr: $broadcastAddr";
-        $res .= "\n Total Subnet IPs: $totals";
+        $res .= "\n\n  End Addr: $broadcastAddr";
+        $res .= "\n\n    Total Subnet IPs: $totals";
         
         return $res;
     }
