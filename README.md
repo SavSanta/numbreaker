@@ -20,6 +20,10 @@ Alternatively, once can install as a right-click pop-up in your Cobalt Strike de
 
 ## Screenshots
 
+![NTDATE EX](screenshots/sshot-samacct.png)
+
+SAM Account Type
+
 ![NTDATE EX](screenshots/sshot-ntdate.png)
 
 MSAD/LDAP/NT Datetime
@@ -27,6 +31,11 @@ MSAD/LDAP/NT Datetime
 ![UAC EX](screenshots/sshot-uac.png)
 
 User Account Control
+
+![UAC EX](screenshots/sshot-cidr.png)
+
+CIDR Range Calc
+
 
 ## TODO
 - UI Readibilty Changes/Theme Switcher (ADA assist for us blindies)
