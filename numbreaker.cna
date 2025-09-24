@@ -449,6 +449,17 @@
             $res = "ERROR: Invalid IPv4 address:". $ip;
             return $res;
         }
+
+        # Check octets within max range
+        foreach $val ($parts) {
+            #$val = $null;
+            $val = int($val);
+ 
+            if ($val == $null || $val < 0 || $val > 255) {
+                $res = "ERROR: Invalid octet range.";
+            return $res;
+            }
+        }
         
         # Long Conversions.
         $ipNum = (long($parts[0]) << 24) |
