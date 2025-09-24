@@ -97,6 +97,7 @@
                 $jRadioButton1 = [new JRadioButton];
                 $jRadioButton2 = [new JRadioButton];
                 $jRadioButton3 = [new JRadioButton];
+                $jRadioButton4 = [new JRadioButton];
                 $jScrollPane2 = [new JScrollPane];
                 $jTextArea1 = [new JTextArea];
                 
@@ -128,9 +129,17 @@
                 [$jRadioButton3 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 [$jRadioButton3 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
                 
+                [$jRadioButton4 setSelected: 0];
+                [$jRadioButton4 setText: "cidr"];
+                [$jRadioButton4 setActionCommand: "cidr"];
+                [$jRadioButton4 setToolTipText: "CIDR Range Decipher"];
+                [$jRadioButton4 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
+                [$jRadioButton4 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
+                
                 [$buttonGroup1 add: $jRadioButton1];
                 [$buttonGroup1 add: $jRadioButton2];
                 [$buttonGroup1 add: $jRadioButton3];
+                [$buttonGroup1 add: $jRadioButton4];
                 
                 [$jTextArea1 setColumns: 20];
                 [$jTextArea1 setRows: 5];
@@ -157,6 +166,11 @@
                 [$jRadioButton3 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "ntdate"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+                
+                [$jRadioButton4 addActionListener: lambda({
+                [$callable: $sm, $nmd, $ta] ; ; },
+                $sm => "cidr"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+               
                
         
         # ------------------------Beginneth the Complex Layouting Hence The Underindent-------------------------- #
@@ -165,12 +179,14 @@
         [$jPanel2 setLayout: $jPanel2Layout];
 
         $group1 = [$jPanel2Layout createSequentialGroup];
-        [$group1 addGap: 157];
+        [$group1 addGap: 125];
         [$group1 addComponent: $jRadioButton1];
         [$group1 addPreferredGap: $RELATED];
         [$group1 addComponent: $jRadioButton2];
         [$group1 addPreferredGap: $RELATED];
         [$group1 addComponent: $jRadioButton3];
+        [$group1 addPreferredGap: $RELATED];
+        [$group1 addComponent: $jRadioButton4];
 
         $group2 = [$jPanel2Layout createSequentialGroup];
         [$group2 addGap: 203 ];
@@ -212,6 +228,7 @@
         [$parallelGroup2 addComponent: $jRadioButton1];
         [$parallelGroup2 addComponent: $jRadioButton2];
         [$parallelGroup2 addComponent: $jRadioButton3];
+        [$parallelGroup2 addComponent: $jRadioButton4];
         
         [$verticalGroup addGroup: $parallelGroup2];
         [$verticalGroup addPreferredGap: $RELATED];
@@ -264,6 +281,11 @@
             $output = calc_samacct($input);
         }
         
+        if ($selOpt eq "cidr" ) {
+        
+            $output = calc_cidr($input);
+        }
+        
         [$ta setText: $output];
         return;
         
@@ -297,7 +319,6 @@
         # Attempt to cast to a number
         $ldaptime = parseNumber($ldaptime);
         
-
         # Convert to milliseconds and subtract epoch
         $ans = ($ldaptime / 10000L) - $WIN_EPOCH; 
         
@@ -406,6 +427,57 @@
 
     }
     
+    sub calc_cidr {
+        local('$res $cidr $ip $prefix $parts $ipNum $mask $network $broadcast $totals');
+        
+        # Only accept the format "192.168.1.0/24"
+        $cidr = $1;
+        
+        # TODOMAYBE: Pull in th validator routines from ipv4guard for octetted netmasks
+        # Split IP and CIDR
+        ($ip, $prefix) = split("/", $cidr);
+        $prefix = int($prefix);
+        
+        if ($prefix == $null || $prefix < 0 || $prefix > 32) {
+            $res = "ERROR: Invalid CIDR number.";
+            return $res;
+        }
+        
+        # Chop octets
+        $parts = split("\\.", $ip);
+        if (size($parts) != 4) {
+            $res = "ERROR: Invalid IPv4 address:". $ip;
+            return $res;
+        }
+        
+        # Long Conversions.
+        $ipNum = (long($parts[0]) << 24) |
+                 (long($parts[1]) << 16) |
+                 (long($parts[2]) << 8) |
+                 (long($parts[3]));
+        
+        # Calculate subnet mask (e.g., /24 -> 0xFFFFFF00)
+        $mask = -1 << (32 - $prefix);
+        
+        # Network address: IP AND mask
+        $network = $ipNum & $mask;
+        
+        # Broadcast address: Network OR (inverted mask)
+        $broadcast = $network | (0xFFFFFFFFL - $mask);
+
+        $networkAddr = long_to_ip($network);
+        $broadcastAddr = long_to_ip($broadcast);
+        
+        # Calculate total addresses (2^(32-prefix))
+        $totals = 1 << (32 - $prefix);
+        
+        $res .= "\nStart Addr: $networkAddr";
+        $res .= "\nEnd Addr: $broadcastAddr";
+        $res .= "\n Total Subnet IPs: $totals";
+        
+        return $res;
+    }
+    
     sub test_calc_ntdate {
 
         if ($DEVDEBUG)
@@ -430,9 +502,31 @@
 
     }
     
+    sub test_calc_cidr {
+
+        if ($DEVDEBUG)
+        {
+                calc_cidr("192.168.1.0/16");
+                return;
+        }
+
+    }
+    
     sub trim {
     
         return tr($1, "\s", "s");
     }
+    
+    sub long_to_ip {
+    local('$num $octet1 $octet2 $octet3 $octet4');
+    $num = $1;
+    
+    $octet1 = ($num >> 24) & 0xFF;
+    $octet2 = ($num >> 16) & 0xFF;
+    $octet3 = ($num >> 8) & 0xFF;
+    $octet4 = $num & 0xFF;
+    
+    return "$octet1\.$octet2\.$octet3\.$octet4";
+}
     
 
