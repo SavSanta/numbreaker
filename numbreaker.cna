@@ -620,10 +620,15 @@
     }
 
     sub switcher {
-    
-        #$dark= @( "#125496", "#491296", "#05539c", "#2d3338", "#915050", "#010054", "#000000" );
-        #$lit = @( "#8a9cab", "#77b7ed", "#d6ff6e", "#aff0e3", "#fa7500", "#ffffff", );
-        
+
+        $dark = @( [new Color: 0X571c8c], [new Color: 0X125496], [new Color: 0X2d3338], [new Color: 0X05539c], [new Color: 0X310b0b], [new Color: 0X010054], [new Color: 0X000000] );
+        $lite = @( [new Color: 0Xffffff], [new Color: 0Xd6d6d6], [new Color: 0Xaff0e3], [new Color: 0Xd6ff6e], [new Color: 0Xfa7500], [new Color: 0X88ff00], [new Color: 0Xffffff] );
+
+        $thidx += 1;
+        if ($thidx > 7) { $thidx = 0; }
+
+        [$jTextArea1 setBackground: $dark[$thidx]];
+        [$jTextArea1 setForeground: $lite[$thidx]];
         return;
     }
     
