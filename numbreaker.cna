@@ -98,6 +98,7 @@
                 $jRadioButton2 = [new JRadioButton];
                 $jRadioButton3 = [new JRadioButton];
                 $jRadioButton4 = [new JRadioButton];
+                $jRadioButton5 = [new JRadioButton];
                 $jScrollPane2 = [new JScrollPane];
                 $jTextArea1 = [new JTextArea];
                 
@@ -136,10 +137,18 @@
                 [$jRadioButton4 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
                 [$jRadioButton4 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
                 
+                [$jRadioButton5 setSelected: 0];
+                [$jRadioButton5 setText: "jwt"];
+                [$jRadioButton5 setActionCommand: "jwt"];
+                [$jRadioButton5 setToolTipText: "JWT Decode"];
+                [$jRadioButton5 setBorder: [BorderFactory createEmptyBorder: 0, 0, 0, 0]];
+                [$jRadioButton5 setMargin: [new java.awt.Insets: 0, 0, 0, 0]];
+                
                 [$buttonGroup1 add: $jRadioButton1];
                 [$buttonGroup1 add: $jRadioButton2];
                 [$buttonGroup1 add: $jRadioButton3];
                 [$buttonGroup1 add: $jRadioButton4];
+                [$buttonGroup1 add: $jRadioButton5];
                 
                 [$jTextArea1 setColumns: 20];
                 [$jTextArea1 setRows: 5];
@@ -170,6 +179,10 @@
                 [$jRadioButton4 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "cidr"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
+                
+                [$jRadioButton5 addActionListener: lambda({
+                [$callable: $sm, $nmd, $ta] ; ; },
+                $sm => "jwt"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
                
                
         
@@ -179,7 +192,7 @@
         [$jPanel2 setLayout: $jPanel2Layout];
 
         $group1 = [$jPanel2Layout createSequentialGroup];
-        [$group1 addGap: 125];
+        [$group1 addGap: 100];
         [$group1 addComponent: $jRadioButton1];
         [$group1 addPreferredGap: $RELATED];
         [$group1 addComponent: $jRadioButton2];
@@ -187,6 +200,8 @@
         [$group1 addComponent: $jRadioButton3];
         [$group1 addPreferredGap: $RELATED];
         [$group1 addComponent: $jRadioButton4];
+        [$group1 addPreferredGap: $RELATED];
+        [$group1 addComponent: $jRadioButton5];
 
         $group2 = [$jPanel2Layout createSequentialGroup];
         [$group2 addGap: 203 ];
@@ -229,6 +244,7 @@
         [$parallelGroup2 addComponent: $jRadioButton2];
         [$parallelGroup2 addComponent: $jRadioButton3];
         [$parallelGroup2 addComponent: $jRadioButton4];
+        [$parallelGroup2 addComponent: $jRadioButton5];
         
         [$verticalGroup addGroup: $parallelGroup2];
         [$verticalGroup addPreferredGap: $RELATED];
@@ -285,6 +301,11 @@
         
             $output = calc_cidr($input);
         }
+         
+        if ($selOpt eq "jwt" ) {
+        
+            $output = calc_jwt($input);
+        }
         
         [$ta setText: $output];
         return;
@@ -302,6 +323,10 @@
         # EPOCH establishment for Windows
         $WIN_EPOCH = 11644473600000L;
  
+        # Sanity Checks Here
+        # Entries like dsPropagation, whenCreated, whenChanged have values like DSPropagation: 16010101000000.0Z whenCreated: 20250805163117.0Z whenChanged: 20250829142335.0Z should be discarded. It's just YYYYMMDDHHMMSS.TIMEZONE
+        
+        
         # Sanity Checks Here
         # Make this matcher more robust. It silent fails on some cases (e.g. "#Bad21433422424" or "$131341412424343343")
         if ($ldaptime ismatch '[^0-9]+') {
@@ -370,13 +395,14 @@
         return $res;
         
     }
-    
+
+
     sub calc_samacct {
     
         local('$count $samval $val $res');
         $samval = trim($1); 
         $val = $null;
-        $res = "\n\t SAM Account Type\n";
+        $res = "\n\tSAM Account Type\n";
         $count = 0;
     
         @textval = @("SAM_DOMAIN_OBJECT" , "SAM_GROUP_OBJECT" , "SAM_NON_SECURITY_GROUP_OBJECT" , "SAM_ALIAS_OBJECT" , "SAM_NON_SECURITY_ALIAS_OBJECT" , 
@@ -413,20 +439,8 @@
         
         return $res;
     }
-
-    sub test_calc_samacct {
     
-        if ($DEVDEBUG)
-        {
-                # 268435456
-                # 268435457
-                # 536870912
-                calc_samacct("536870912");
-                return;
-        }
 
-    }
-    
     sub calc_cidr {
         local('$res $cidr $ip $prefix $parts $ipNum $mask $network $broadcast $totals');
         
@@ -489,6 +503,44 @@
         return $res;
     }
     
+
+    sub calc_jwt {
+
+        local('$data $conts $res');
+        $data = $1; 
+        
+        if ($data eq $false) {
+            return;
+        }
+        
+        $chunks = split("\\.", $data);
+        if (size($chunks) != 3) {
+            $res = "ERROR: Not a valid JWT";
+            return $res;
+        }
+        
+        # TODO-MAYBE: End elisions. Impl padding Verf-Korrekt Algorithm.
+        # TODO: Separate JWT with horizontal breaks instead.
+        $res = pp(base64_decode($chunks[0]), 2);
+        $res .= "\n.";
+        $res .= pp(base64_decode($chunks[1]), 2);
+        $res .= "\n.[Sig]";
+        return $res;
+    }
+    
+    sub test_calc_samacct {
+    
+        if ($DEVDEBUG)
+        {
+                # 268435456
+                # 268435457
+                # 536870912
+                calc_samacct("536870912");
+                return;
+        }
+
+    }
+    
     sub test_calc_ntdate {
 
         if ($DEVDEBUG)
@@ -523,9 +575,36 @@
 
     }
     
+    sub test_calc_jwt {
+    
+        if ($DEVDEBUG)
+        {
+                calc_jwt("");
+                return;
+        }
+    
+    }
+    
     sub trim {
     
         return tr($1, "\s", "s");
+    }
+
+    sub repeat {
+        local('$char $res $count');
+        $res = "";
+        ($char, $count) = @($1, $2);
+
+        if ($count < 0) {
+            $count = 0;
+        }
+        
+        
+        for ($i = 0; $i < $count; $i++) {
+            $result .= $char;
+        }
+
+        return $result;
     }
     
     sub long_to_ip {
@@ -548,4 +627,73 @@
         return;
     }
     
+    
+    sub pp {
+        
+        local('$json', '$indent', '$level', '$inString', '$escaped', '$output');
+        $json = $1;
+        $indent = $2;
+        $level = 0;
+        $inString = 0;
+        $escaped = 0;
+        $output = "";
+
+        foreach $char (split('', $json)) {
+            if ($escaped) {
+                $output .= $char;
+                $escaped = 0;
+                continue;
+            }
+
+            if ($char eq "\\") {
+                $output .= $char;
+                $escaped = 1;
+                continue;
+            }
+
+            if ($char eq "\"") {
+                $inString = ($inString + 1) % 2;
+                $output .= $char;
+                continue;
+            }
+
+            if ($inString) {
+                $output .= $char;
+                continue;
+            }
+
+            if ($char eq "{" || $char eq "[") {
+                $level += 1;
+                $output .= $char . "\n" . repeat(" ", $level * $indent);
+            }
+            else if ($char eq "}" || $char eq "]") {
+                $level -= 1;
+                $output .= "\n" . repeat(" ", $level * $indent) . $char;
+            }
+            else if ($char eq ",") {
+                $level -= 1;
+                $output .= $char . "\n" . repeat(" ", $level * $indent);
+            }
+            else if ($char eq ":") {
+                $output .= ": ";
+            }
+            else if ($char ismatch '\s') {
+                # skips whitespace outside of strings. may use eof matcher
+            }
+            else if ($char ismatch '\n$') {
+                $output .= "\n". repeat(" ", $level * $indent);
+            }
+            else if ($char eq "") {
+                # becoz sleep/agg does weird things when does broke to tokes
+            }
+            else {
+                $output .= $char ;
+            }
+        }
+
+    return $output;
+    }
+
+
+
 

@@ -7,7 +7,8 @@ Supports converting from:
    - SAMAccount type values that are typically found listed for accounts in Active Directory.  
    - User Account Control values that are associated to an accounts in Active Directory.  
    - Common Microsoft timestamps. ie Active Directory (e.g. accountExpires, LastLogon, LastLogonTimestamp, and LastPwdSet) or Windows Filetime/Systemtime values.
-   - CIDR Range start and end calculation
+   - CIDR IP Range start and end calculation
+   - JSON Web Token (JWT) decode/display.
     
 ### Usage
 
@@ -36,6 +37,9 @@ User Account Control
 
 CIDR Range Calc
 
+![UAC EX](screenshots/sshot-jwt.png)
+
+JWT Decoder
 
 ## TODO
 - UI Readibilty Changes/Theme Switcher (ADA assist for us blindies)
