@@ -40,6 +40,3 @@ CIDR Range Calc
 ![UAC EX](screenshots/sshot-jwt.png)
 
 JWT Decoder
-
-## TODO
-- UI Readibilty Changes/Theme Switcher (ADA assist for us blindies)

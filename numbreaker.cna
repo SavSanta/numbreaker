@@ -94,6 +94,7 @@
                 $jLabel6 = [new JLabel];
                 $jLabel7 = [new JLabel];
                 $jTextField5 = [new JTextField];
+                $jButton1 = [new JButton];
                 $jRadioButton1 = [new JRadioButton];
                 $jRadioButton2 = [new JRadioButton];
                 $jRadioButton3 = [new JRadioButton];
@@ -106,6 +107,8 @@
                 [$jPanel2 setForeground: [new Color: 255, 51, 0]];
                 
                 [$jTextField5 setText: $resstr];
+                [$jButton1 setText: "↓↑"];
+                [$jButton1 setToolTipText: "Switch Theme"];
                 
                 [$jLabel6 setText: "Input Value"];
                 [$jLabel7 setText: "Input Value Type"];
@@ -164,6 +167,7 @@
                 [$jPanel2 setLayout: $jPanel2Layout];
 
                 # Calculation Handler Routines
+                [$jButton1 addActionListener: &switcher];
                 [$jRadioButton1 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "samacct" , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
@@ -216,7 +220,8 @@
         [$group3 addComponent: $jLabel6];
         [$group3 addPreferredGap: $RELATED];
         [$group3 addComponent: $jTextField5];
-        [$group3 addGap: 20];
+        [$group3 addGap: 10];
+        [$group3 addComponent: $jButton1];
 
         $group4 = [$jPanel2Layout createSequentialGroup];
         [$group4 addComponent: $jScrollPane2];
@@ -233,6 +238,7 @@
         $parallelGroup1 = [$jPanel2Layout createParallelGroup: $BASELINE ];
         [$parallelGroup1 addComponent: $jLabel6];
         [$parallelGroup1 addComponent: $jTextField5, -2, -1, -2];
+        [$parallelGroup1 addComponent: $jButton1];
 
         [$verticalGroup addGroup: $parallelGroup1];
         [$verticalGroup addPreferredGap: $RELATED];
