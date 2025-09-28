@@ -1,7 +1,7 @@
 # numbreaker
 # Author: Savsanta (Ru)
 # Numerical Conversion Operator Helper CNA Script For Red Team Engagements
-# majdate: 2025-09-27
+# chgdate: 2025-09-28
 
  beacon_command_register("numbreaker", "Numerical Conversion RT Operators Helper CNA Script For Red Team Engagements",
                 "\nnumbreaker \n" .
@@ -164,9 +164,6 @@
                 [$jTextArea1 setBackground: [new Color: 87, 28, 140]];
                 [$jScrollPane2 setViewportView: $jTextArea1];
 
-                $jPanel2Layout = [new GroupLayout: $jPanel2];
-                [$jPanel2 setLayout: $jPanel2Layout];
-
                 # Calculation Handler Routines
                 [$jButton1 addActionListener: &switcher];
                 [$jRadioButton1 addActionListener: lambda({
@@ -188,9 +185,8 @@
                 [$jRadioButton5 addActionListener: lambda({
                 [$callable: $sm, $nmd, $ta] ; ; },
                 $sm => "jwt"  , $ta => $jTextArea1 , $callable => &btn_dispatch, $nmd => $jTextField5; )];
-               
-               
-        
+
+
         # ------------------------Beginneth the Complex Layouting Hence The Underindent-------------------------- #
 
         $jPanel2Layout = [new GroupLayout: $jPanel2];
