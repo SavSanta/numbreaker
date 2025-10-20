@@ -522,7 +522,7 @@
             return $res;
         }
         
-        # TODO-MAYBE: End elisions. Impl padding Verf-Korrekt Algorithm.
+        # TODO-MAYBE: End elisions. Impl padding Verf-Korrekt Algorithm per RFC https://datatracker.ietf.org/doc/html/rfc4648#section-5
         # TODO: Separate JWT with horizontal breaks instead.
         $res = pp(base64_decode($chunks[0]), 2);
         $res .= "\n.";
@@ -670,6 +670,8 @@
                 continue;
             }
 
+			# TODO: Attempt to find a fix for Sleep/Aggressor limitation where it automatically performs trimming/stripping on whitespace tokens
+			# often as a false which ruins the alignment and indent levels when it comes to newline
             if ($char eq "{" || $char eq "[") {
                 $level += 1;
                 $output .= $char . "\n" . repeat(" ", $level * $indent);
