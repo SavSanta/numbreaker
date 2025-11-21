@@ -1,7 +1,7 @@
 # numbreaker
 # Author: Savsanta (Ru)
 # Numerical Conversion Operator Helper CNA Script For Red Team Engagements
-# chgdate: 2025-10-20
+# chgdate: 2025-11-21
 
  beacon_command_register("numbreaker", "Numerical Conversion RT Operators Helper CNA Script For Red Team Engagements",
                 "\nnumbreaker \n" .
