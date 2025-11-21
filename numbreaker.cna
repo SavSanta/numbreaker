@@ -452,9 +452,15 @@
         if (find($cidr, '\s')) {
             $res = "ERROR: Remove spaces from input.";
             return $res;
-        }    
-        
-        # TODOMAYBE: Pull in th validator routines from ipv4guard for octetted netmasks
+        }
+
+        # Validate the input hasnt been fat-fingered
+        if ($cidr !ismatch '[0-9./]+') {
+            $res = "ERROR: Invalid input.";
+            return $res;
+        }
+
+        # TODOMAYBE: Pull in the validator routines from ipv4guard for octetted netmasks
         # Split IP and CIDR
         ($ip, $prefix) = split("/", $cidr);
         $prefix = int($prefix);
