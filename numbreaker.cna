@@ -482,7 +482,7 @@
             #$val = $null;
             $val = int($val);
  
-            if ($val == $null || $val < 0 || $val > 255) {
+            if ($val < 0 || $val > 255) {
                 $res = "ERROR: Invalid octet range.";
             return $res;
             }
